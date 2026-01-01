@@ -152,18 +152,18 @@ vec4 computePolarWave(vec2 uv, float iTime, float bass, float mid, float highMid
 
         // Catmull-Rom spline interpolation for smooth curve through mirrored bands
         float bandPos = mirroredPos * float(NBARS - 1);
-        int band1 = int(floor(bandPos));
-        int band0 = max(band1 - 1, 0);
-        int band2 = min(band1 + 1, NBARS - 1);
-        int band3 = min(band1 + 2, NBARS - 1);
+        float fband1 = floor(bandPos);
+        float fband0 = max(fband1 - 1.0, 0.0);
+        float fband2 = min(fband1 + 1.0, float(NBARS - 1));
+        float fband3 = min(fband1 + 2.0, float(NBARS - 1));
 
         float t = fract(bandPos);
 
         // Sample the 4 control points
-        float p0 = getAudio(float(band0) / float(NBARS - 1)) * ubuf.sensitivity;
-        float p1 = getAudio(float(band1) / float(NBARS - 1)) * ubuf.sensitivity;
-        float p2 = getAudio(float(band2) / float(NBARS - 1)) * ubuf.sensitivity;
-        float p3 = getAudio(float(band3) / float(NBARS - 1)) * ubuf.sensitivity;
+        float p0 = getAudio(fband0 / float(NBARS - 1)) * ubuf.sensitivity;
+        float p1 = getAudio(fband1 / float(NBARS - 1)) * ubuf.sensitivity;
+        float p2 = getAudio(fband2 / float(NBARS - 1)) * ubuf.sensitivity;
+        float p3 = getAudio(fband3 / float(NBARS - 1)) * ubuf.sensitivity;
 
         // Catmull-Rom spline interpolation
         float t2 = t * t;
@@ -435,16 +435,16 @@ void main() {
                 // Polar wave bloom - Catmull-Rom spline with mirroring matching main render
                 float mirroredPos = circlePos < 0.5 ? circlePos * 2.0 : (1.0 - circlePos) * 2.0;
                 float bandPos = mirroredPos * float(NBARS - 1);
-                int band1 = int(floor(bandPos));
-                int band0 = max(band1 - 1, 0);
-                int band2 = min(band1 + 1, NBARS - 1);
-                int band3 = min(band1 + 2, NBARS - 1);
+                float fband1 = floor(bandPos);
+                float fband0 = max(fband1 - 1.0, 0.0);
+                float fband2 = min(fband1 + 1.0, float(NBARS - 1));
+                float fband3 = min(fband1 + 2.0, float(NBARS - 1));
 
                 float t = fract(bandPos);
-                float p0 = getAudio(float(band0) / float(NBARS - 1)) * ubuf.sensitivity;
-                float p1 = getAudio(float(band1) / float(NBARS - 1)) * ubuf.sensitivity;
-                float p2 = getAudio(float(band2) / float(NBARS - 1)) * ubuf.sensitivity;
-                float p3 = getAudio(float(band3) / float(NBARS - 1)) * ubuf.sensitivity;
+                float p0 = getAudio(fband0 / float(NBARS - 1)) * ubuf.sensitivity;
+                float p1 = getAudio(fband1 / float(NBARS - 1)) * ubuf.sensitivity;
+                float p2 = getAudio(fband2 / float(NBARS - 1)) * ubuf.sensitivity;
+                float p3 = getAudio(fband3 / float(NBARS - 1)) * ubuf.sensitivity;
 
                 float t2 = t * t;
                 float t3 = t2 * t;
