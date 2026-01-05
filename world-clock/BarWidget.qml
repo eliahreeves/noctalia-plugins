@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Io
 import qs.Commons
 import qs.Services.UI
 import qs.Widgets
@@ -84,6 +85,8 @@ Rectangle {
     onTriggered: updateTime()
   }
 
+  property var timeProcesses: ({})
+
   function updateTime() {
     if (enabledTimezones.length === 0) {
       currentCity = I18n.tr("world-clock.no-timezone");
@@ -94,16 +97,54 @@ Rectangle {
     let tz = enabledTimezones[currentIndex];
     currentCity = tz.name;
 
-    // Create date with timezone
-    let now = new Date();
-    let options = {
-      timeZone: tz.timezone,
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: timeFormat.includes('h')
-    };
+    // Get time using date command with TZ environment variable
+    getTimeInTimezone(tz.timezone);
+  }
 
-    currentTime = now.toLocaleTimeString('en-US', options);
+  function getTimeInTimezone(timezone) {
+    // Create format string based on user preference
+    let format = timeFormat;
+    if (format === "HH:mm") format = "+%H:%M";
+    else if (format === "HH:mm:ss") format = "+%H:%M:%S";
+    else if (format === "h:mm A") format = "+%I:%M %p";
+    else if (format === "h:mm:ss A") format = "+%I:%M:%S %p";
+    else format = "+%H:%M";
+
+    let processId = "time_" + timezone.replace(/\//g, "_");
+    
+    if (!timeProcesses[processId]) {
+      timeProcesses[processId] = timeProcessComponent.createObject(root, {
+        processId: processId,
+        timezone: timezone,
+        dateFormat: format
+      });
+    } else {
+      timeProcesses[processId].dateFormat = format;
+      timeProcesses[processId].running = true;
+    }
+  }
+
+  Component {
+    id: timeProcessComponent
+    Process {
+      property string processId: ""
+      property string timezone: ""
+      property string dateFormat: "+%H:%M"
+      
+      running: false
+      command: ["sh", "-c", "TZ=" + timezone + " date '" + dateFormat + "'"]
+      stdout: StdioCollector {}
+      
+      Component.onCompleted: {
+        running = true;
+      }
+      
+      onExited: (exitCode) => {
+        if (exitCode === 0) {
+          root.currentTime = stdout.text.trim();
+        }
+      }
+    }
   }
 
   readonly property string displayText: {
