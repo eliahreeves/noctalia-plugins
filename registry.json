@@ -48,9 +48,9 @@
     {
       "id": "github-feed",
       "name": "GitHub Feed",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": "linuxmobile",
-      "description": "Display GitHub activity feed with stars, PRs, forks in an overlay panel",
+      "description": "Display GitHub activity from users you follow and activity on your repos",
       "repository": "https://github.com/linuxmobile/github-feed-noctalia",
       "minNoctaliaVersion": "3.6.0",
       "license": "MIT",
@@ -60,7 +60,7 @@
         "Development",
         "Network"
       ],
-      "lastUpdated": "2026-01-06T12:08:53-03:00"
+      "lastUpdated": "2026-01-07T19:30:55-03:00"
     },
     {
       "id": "hello-world",
