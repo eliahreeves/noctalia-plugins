@@ -1,0 +1,16 @@
+{
+  "settings": {
+    "showTempText": {
+      "desc": "Display the current degrees alongside the condition.",
+      "label": "Show temperature text"
+    },
+    "showTempLetter": {
+      "desc": "Show the letter (°C or °F) indicating the temperature unit.",
+      "label": "Show temperature letter"
+    },
+    "showConditionIcon": {
+      "desc": "Include the visual weather symbol in the widget.",
+      "label": "Show condition icon"
+    }
+  }
+}
