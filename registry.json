@@ -602,7 +602,7 @@
     {
       "id": "weekly-calendar",
       "name": "Weekly Calendar",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "official": false,
       "author": "dodaars",
       "description": "A weekly calendar plugin complementing Noctalia's inbuilt calendar service.",
@@ -614,7 +614,7 @@
         "Panel",
         "Productivity"
       ],
-      "lastUpdated": "2026-01-30T15:00:59-05:00"
+      "lastUpdated": "2026-02-05T11:19:10-05:00"
     },
     {
       "id": "world-clock",
